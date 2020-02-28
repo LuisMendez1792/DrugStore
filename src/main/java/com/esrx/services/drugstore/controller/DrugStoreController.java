@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
 import com.esrx.services.drugstore.domain.GetResponse;
 import com.esrx.services.drugstore.service.ServiceImpl;
 
-@RestController
+@Controller
 @RequestMapping(value = "/drugstore",  produces = "application/json")
 public class DrugStoreController {
 	
