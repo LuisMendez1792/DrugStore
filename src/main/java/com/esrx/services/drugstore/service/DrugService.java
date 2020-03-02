@@ -9,5 +9,5 @@ import com.esrx.services.drugstore.model.Drug;
 
 @Service
 public interface DrugService {
-	List<GetResponse> getAllDrugs();
+	List<GetResponse> getDrugs();
 }

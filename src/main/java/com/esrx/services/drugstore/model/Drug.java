@@ -2,6 +2,7 @@ package com.esrx.services.drugstore.model;
 
 import javax.persistence.Table;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 
 //import javax.persistence.Entity;
@@ -10,23 +11,54 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-//@Entity
-@Getter
-@Setter
+@Entity
+
 @AllArgsConstructor
-@Table(name = "DRUGS", schema = "XE")
+@Table(name = "DRUGS" , schema = "SYSTEM")
 public class Drug {
 	
+	public Long getId() {
+		return Id;
+	}
+
+	public void setId(Long id) {
+		Id = id;
+	}
+
+	public String getName() {
+		return Name;
+	}
+
+	public void setName(String name) {
+		Name = name;
+	}
+
+	public String getDescription() {
+		return Description;
+	}
+
+	public void setDescription(String description) {
+		Description = description;
+	}
+
+	public Long getCodebar() {
+		return Codebar;
+	}
+
+	public void setCodebar(Long codebar) {
+		Codebar = codebar;
+	}
+
 	@Id
-	@Column(name = "Id")
+//	@Column(name = "Id")
 	private Long Id;
 	
-	@Column(name = "Name")
+	//@Column(name = "Name")
 	private String Name;
 	
-	@Column(name = "Description")
+	//@Column(name = "Description")
 	private String Description;
 	
-	@Column(name = "Barcode")
-	private Long Barcode;
+	//@Column(name = "Codebar")
+	private Long Codebar;
 }
