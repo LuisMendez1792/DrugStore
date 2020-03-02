@@ -3,7 +3,10 @@ package com.esrx.services.drugstore.model;
 import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 //import javax.persistence.Entity;
 
@@ -14,9 +17,24 @@ import lombok.Setter;
 @Entity
 
 @AllArgsConstructor
-@Table(name = "DRUGS" , schema = "SYSTEM")
+@Table(name = "DRUGS", schema = "SYSTEM")
 public class Drug {
-	
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SYSTEM.MY_SEQ")
+	@SequenceGenerator(name = "SYSTEM.MY_SEQ", allocationSize = 1)
+	@Column(name = "Id")
+	private Long Id;
+
+	@Column(name = "Name")
+	private String Name;
+
+	@Column(name = "Description")
+	private String Description;
+
+	@Column(name = "Codebar")
+	private Long Codebar;
+
 	public Long getId() {
 		return Id;
 	}
@@ -49,16 +67,4 @@ public class Drug {
 		Codebar = codebar;
 	}
 
-	@Id
-//	@Column(name = "Id")
-	private Long Id;
-	
-	//@Column(name = "Name")
-	private String Name;
-	
-	//@Column(name = "Description")
-	private String Description;
-	
-	//@Column(name = "Codebar")
-	private Long Codebar;
 }

@@ -1,25 +1,21 @@
 package com.esrx.services.drugstore.domain;
 
+import org.codehaus.commons.nullanalysis.NotNull;
+
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 @ToString
 @AllArgsConstructor
-public class GetResponse {
+public class CreateRequest {
 	
-//	private Long Id;
+	@NotNull
 	private String Name;
+	@NotNull
 	private String Description;
+	@NotNull
 	private Long Codebar;
 	
-//	public Long getId() {
-//		return Id;
-//	}
-//	public void setId(Long id) {
-//		Id = id;
-//	}
 	public String getName() {
 		return Name;
 	}

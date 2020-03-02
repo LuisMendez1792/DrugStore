@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
+import com.esrx.services.drugstore.domain.CreateRequest;
+import com.esrx.services.drugstore.domain.CreateResponse;
 import com.esrx.services.drugstore.domain.GetResponse;
 import com.esrx.services.drugstore.model.Drug;
 import com.esrx.services.drugstore.repository.DrugRepository;
@@ -32,6 +34,16 @@ public class ServiceImpl implements DrugService{
 			throw new EntityNotFoundException("Drugs was not found");
 		else
 			return orikaMapperFacade.mapAsList(drugList, GetResponse.class);
+	}
+	
+	@Override
+	public CreateResponse postDrug(CreateRequest request) {
+		CreateResponse response = new CreateResponse();
+		Drug drugEntity = new Drug();
+		drugEntity = orikaMapperFacade.map(request, Drug.class);
+		Drug saveDrug = repo.save(drugEntity);
+		response = orikaMapperFacade.map(saveDrug,  CreateResponse.class);
+		return response;
 	}
 
 }
