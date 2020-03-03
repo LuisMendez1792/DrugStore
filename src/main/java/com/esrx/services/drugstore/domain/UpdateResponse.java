@@ -1,18 +1,13 @@
 package com.esrx.services.drugstore.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
-@ToString
-@AllArgsConstructor
-public class GetResponse {
-	
+public class UpdateResponse {
 	private Long Id;
-	private String Name;
-	private String Description;
-	private Long Codebar;
+	private String name;
+	private String description;
+	private Long codebar;
 	
 	public Long getId() {
 		return Id;
@@ -21,23 +16,21 @@ public class GetResponse {
 		Id = id;
 	}
 	public String getName() {
-		return Name;
+		return name;
 	}
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 	public void setDescription(String description) {
-		Description = description;
+		this.description = description;
 	}
 	public Long getCodebar() {
-		return Codebar;
+		return codebar;
 	}
 	public void setCodebar(Long codebar) {
-		Codebar = codebar;
+		this.codebar = codebar;
 	}
-	
-	
 }

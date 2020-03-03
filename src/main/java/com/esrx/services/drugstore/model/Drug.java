@@ -11,20 +11,18 @@ import javax.persistence.SequenceGenerator;
 //import javax.persistence.Entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-
-@AllArgsConstructor
+@ToString
 @Table(name = "DRUGS", schema = "SYSTEM")
 public class Drug {
 
-	@Id
+	
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SYSTEM.MY_SEQ")
 	@SequenceGenerator(name = "SYSTEM.MY_SEQ", allocationSize = 1)
 	@Column(name = "Id")
-	private Long Id;
+	@Id private Long Id;
 
 	@Column(name = "Name")
 	private String Name;

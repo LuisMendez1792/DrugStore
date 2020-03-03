@@ -2,16 +2,17 @@ package com.esrx.services.drugstore.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import com.esrx.services.drugstore.domain.CreateRequest;
 import com.esrx.services.drugstore.domain.CreateResponse;
 import com.esrx.services.drugstore.domain.GetResponse;
-import com.esrx.services.drugstore.model.Drug;
+import com.esrx.services.drugstore.domain.UpdateRequest;
+import com.esrx.services.drugstore.domain.UpdateResponse;
 
-@Service
 public interface DrugService {
+	GetResponse getDrugById(Long Id);
 	List<GetResponse> getDrugs();
 	CreateResponse postDrug(CreateRequest request);
+	UpdateResponse putDrug(UpdateRequest request, Long Id);
+	void deleteDrugById(Long Id);
 	
 }
