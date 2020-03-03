@@ -52,15 +52,16 @@ public class ServiceImpl implements DrugService{
 	@Override
 	public GetResponse getDrugById(Long Id) {
 		Optional<Drug> drug = repo.findById(Id);
-		if(drug != null) {
+		if(drug.isPresent()) {
 			GetResponse drugfound = new GetResponse();
 			drugfound = orikaMapperFacade.map(drug.get(), GetResponse.class);
 			log.info("Drug founded " + drug);
 			return drugfound;
 		}
-		else
+		else {
+			log.info("Dug was not found");
 			throw new EntityNotFoundException("Drug was not found");
-			
+		}
 	}
 	
 	@Override
@@ -68,7 +69,9 @@ public class ServiceImpl implements DrugService{
 		CreateResponse response = new CreateResponse();
 		Drug drugEntity = new Drug();
 		drugEntity = orikaMapperFacade.map(request, Drug.class);
+		log.info("Creating Drug");
 		Drug saveDrug = repo.save(drugEntity);
+		log.info("Drug was created");
 		response = orikaMapperFacade.map(saveDrug,  CreateResponse.class);
 		return response;
 	}
