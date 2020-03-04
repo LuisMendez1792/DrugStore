@@ -1,21 +1,14 @@
 package com.esrx.services.drugstore.domain;
 
-import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class CreateResponse {
 
 		private Long Id;
 
-		public Long getId() {
-			return Id;
-		}
-
-		public void setId(Long id) {
-			Id = id;
-		}
 }

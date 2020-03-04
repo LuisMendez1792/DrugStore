@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.esrx.services.drugstore.domain.UpdateRequest;
 import com.esrx.services.drugstore.model.Drug;
 
 @Repository
