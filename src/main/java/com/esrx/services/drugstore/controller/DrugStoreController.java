@@ -13,57 +13,52 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esrx.services.drugstore.domain.CreateRequest;
-import com.esrx.services.drugstore.domain.CreateResponse;
-import com.esrx.services.drugstore.domain.GetResponse;
 import com.esrx.services.drugstore.domain.UpdateRequest;
-import com.esrx.services.drugstore.domain.UpdateResponse;
+import com.esrx.services.drugstore.model.Drug;
 import com.esrx.services.drugstore.repository.DrugRepository;
 import com.esrx.services.drugstore.service.Service;
 
 @RestController
-@RequestMapping(value = "/", produces = "application/json")
+@RequestMapping(value = "/Store", produces = "application/json")
 public class DrugStoreController {
 
 	@Autowired
 	Service service;
 
 	private static final Logger log = LoggerFactory.getLogger(DrugRepository.class);
+	
 
-	@ResponseStatus(HttpStatus.ACCEPTED)
-	@GetMapping(value = "/drugs", produces = "application/json")
-	public List<GetResponse> getDrugs() {
-		return service.getDrugs();
-
-	}
-
-	@ResponseStatus(HttpStatus.ACCEPTED)
-	@GetMapping(value = "/drugs/{Id}", produces = "application/json")
-	public GetResponse getDrug(@PathVariable Long Id) {
-		return service.getDrugById(Id);
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(value = "/drugs/")
+	public List<Drug> getDrugs(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "codebar", required = false) String codebar) {
+		log.debug("Get users parameters - Name= " + name + ", Codebar= " + codebar);
+		return service.getDrugs(name, codebar);
 
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping(value = "/drugs", consumes = "application/json", produces = "application/json")
-	public CreateResponse postDrug(@RequestBody CreateRequest request) {
-		return service.postDrug(request);
+	@PostMapping(value = "/drugs/")
+	public String postDrug(@RequestBody CreateRequest request) {
+		log.debug("Create user request - " + request.toString());
+		return service.createDrug(request).getId();
 	}
 
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	@PutMapping(value = "/drugs/{Id}", consumes = "application/json", produces = "application/json")
-	public UpdateResponse putDrug(@RequestBody UpdateRequest request, @PathVariable Long Id) {
-
-		return service.putDrug(request, Id);
+	@PutMapping(value = "/drugs/{id}", consumes = "application/json", produces = "application/json")
+	public Drug updateDrug(@RequestBody UpdateRequest request, @PathVariable String id) {
+		log.debug("Update Drug request - id= " + id + " " + request.toString());
+		return service.updateDrug(request, id);
 	}
 
 	@ResponseStatus(HttpStatus.GONE)
-	@DeleteMapping(value = "drugs/{Id}")
-	public void deleteDrugByid(@PathVariable Long Id) {
-		log.info("Deleting the Drug with Id: " + Id);
-		service.deleteDrugById(Id);
+	@DeleteMapping(value = "/drugs/{id}")
+	public void deleteDrug(@PathVariable String id) {
+		log.info("Deleting the Drug with Id: " + id);
+		service.deleteDrug(id);
 	}
 }

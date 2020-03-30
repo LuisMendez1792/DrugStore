@@ -4,93 +4,85 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.client.HttpClientErrorException;
 
 import com.esrx.services.drugstore.domain.CreateRequest;
-import com.esrx.services.drugstore.domain.CreateResponse;
-import com.esrx.services.drugstore.domain.GetResponse;
 import com.esrx.services.drugstore.domain.UpdateRequest;
-import com.esrx.services.drugstore.domain.UpdateResponse;
 import com.esrx.services.drugstore.model.Drug;
 import com.esrx.services.drugstore.repository.DrugRepository;
 
+import io.micrometer.core.instrument.util.StringUtils;
 import ma.glasnost.orika.MapperFacade;
 
 @Component
-public class ServiceImpl implements Service{
-	
+public class ServiceImpl implements Service {
+
 	private static final Logger log = LoggerFactory.getLogger(DrugRepository.class);
-	
+
 	@Autowired
 	DrugRepository repo;
-	
+
 	@Autowired
 	private MapperFacade orikaMapperFacade;
-	
-	public List<GetResponse> getDrugs(){
+
+	public List<Drug> getDrugs(String name, String codebar) {
 		List<Drug> drugList = new ArrayList<>();
+		Optional<Drug> drug = null;
+		log.info("Searching the Drug");
+		if (StringUtils.isNotBlank(codebar)) {
+			drug = repo.findByCodebar(codebar);
+			if (drug != null && drug.isPresent()) {
+				drugList.add(drug.get());
+				return drugList;
+			}
+		}
+		if (StringUtils.isNotBlank(name)) {
+			drugList = repo.findByName(name);
+			if (!CollectionUtils.isEmpty(drugList)) {
+				return drugList;
+			}
+		}
+
+		log.warn("No user was found for given Codebar & Name combination. ");
+
 		drugList = repo.findAll();
-		
-		if(CollectionUtils.isEmpty(drugList))
-			throw new EntityNotFoundException("Drugs was not found");
-		else {
-			log.info("The drugs was founded");
-			return orikaMapperFacade.mapAsList(drugList, GetResponse.class);
-		}
+
+		log.debug("Records was found on DB - " + drugList.toString());
+
+		return drugList;
 	}
-	
-	public GetResponse getDrugById(Long Id) {
-		Optional<Drug> drug = repo.findById(Id);
-		if(drug.isPresent()) {
-			GetResponse drugfound = new GetResponse();
-			drugfound = orikaMapperFacade.map(drug.get(), GetResponse.class);
-			log.info("Drug founded " + drug);
-			return drugfound;
-		}
-		else {
-			log.info("Dug was not found");
-			throw new EntityNotFoundException("Drug was not found");
-		}
+
+	public Drug createDrug(CreateRequest request) {
+		Drug drug = new Drug();
+		drug = orikaMapperFacade.map(request, Drug.class);
+		log.info("Entity pre-saving - " + drug);
+		repo.save(drug);
+		log.info("Entity post-saving - " + drug);
+		return drug;
 	}
-	
-	public CreateResponse postDrug(CreateRequest request) {
-		CreateResponse response = new CreateResponse();
-		Drug drugEntity = new Drug();
-		drugEntity = orikaMapperFacade.map(request, Drug.class);
-		log.info("Creating Drug");
-		Drug saveDrug = repo.save(drugEntity);
-		log.info("Drug was created");
-		response = orikaMapperFacade.map(saveDrug,  CreateResponse.class);
-		return response;
-	}
-	 
-	public UpdateResponse putDrug(UpdateRequest request, Long Id) {
-		UpdateResponse response = new UpdateResponse();
-		GetResponse getDrug = getDrugById(Id);
-		orikaMapperFacade.map(request,  getDrug);
-		Drug drugEntity = orikaMapperFacade.map(getDrug, Drug.class);
-		log.info("Mapped foun drug to new entity: " + drugEntity );
-		Drug savedEntity = repo.save(drugEntity);
-		log.info("The drug was updated" + savedEntity);
-		response = orikaMapperFacade.map(savedEntity, UpdateResponse.class);
-		return response;
-		
-	}
-	
-	public void deleteDrugById(Long Id) {
-		if(!repo.existsById(Id)) {
-			throw new EntityNotFoundException("The drug wit the id " + Id + " was not found");
-		}else {
-			repo.deleteById(Id);
-			log.info("The drug with the Id: " + Id + " was deleted!!");
+
+	public void deleteDrug(String id) {
+		if (repo.existsById(id)) {
+			log.debug("Deleting user with id: " + id);
+			repo.deleteById(id);
 		}
-		
+
+	}
+
+	public Drug updateDrug(UpdateRequest request, String id) {
+		if (!repo.existsById(id))
+			throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "NO USERS FOUND WITH THE GIVEN ID ");
+		Drug drug = new Drug();
+		drug = orikaMapperFacade.map(request, Drug.class);
+		drug.setId(id);
+		return repo.save(drug);
+
 	}
 
 }

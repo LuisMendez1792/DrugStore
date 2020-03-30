@@ -1,35 +1,26 @@
 package com.esrx.services.drugstore.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Entity
 @ToString
 @Data
-@Table(name = "DRUGS", schema = "SYSTEM")
+@AllArgsConstructor
+@NoArgsConstructor
+@Document(collection="Drugs")
 public class Drug {
+	@Id
+	private String id;
 
-	
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SYSTEM.MY_SEQ")
-	@SequenceGenerator(name = "SYSTEM.MY_SEQ", allocationSize = 1)
-	@Column(name = "Id")
-	@Id private Long Id;
+	private String name;
 
-	@Column(name = "Name")
-	private String Name;
-
-	@Column(name = "Description")
-	private String Description;
-
-	@Column(name = "Codebar")
-	private Long Codebar;
+	private String description;
+ 
+	private String codebar;
 
 }

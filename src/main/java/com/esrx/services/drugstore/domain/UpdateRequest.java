@@ -9,7 +9,8 @@ import lombok.ToString;
 @Data
 public class UpdateRequest {
 
-	private String Name;
-	private String Description;
+	private String name;
+	private String description;
+	private String codebar;
 }
 

@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class UpdateResponse {
-	private Long Id;
+	private String id;
 	private String name;
 	private String description;
-	private Long codebar;
+	private String codebar;
 }

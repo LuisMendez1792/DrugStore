@@ -9,9 +9,9 @@ import lombok.ToString;
 @Data
 public class GetResponse {
 
-	private Long Id;
-	private String Name;
-	private String Description;
-	private Long Codebar;
+	private String id;
+	private String name;
+	private String description;
+	private String codebar;
 
 }

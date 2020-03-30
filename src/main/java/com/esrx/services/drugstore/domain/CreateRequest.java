@@ -12,9 +12,9 @@ import lombok.ToString;
 public class CreateRequest {
 	
 	@NotNull
-	private String Name;
+	private String name;
 	@NotNull
-	private String Description;
+	private String description;
 	@NotNull
-	private Long Codebar;	
+	private String codebar;	
 }
